@@ -1,0 +1,14 @@
+{
+    "name": "so-manager-editor",
+    "rootNamespace": "",
+    "references": ["GUID:71362b3a4aedf204ab1beadfd25885e7"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

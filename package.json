@@ -1,0 +1,11 @@
+{
+    "name": "com.epohless.so-manager",
+    "version": "1.0.0",
+    "displayName": "Scriptable Objects Manager",
+    "description": "Manage your SOs effortlessly.",
+    "unity": "2025.1",
+    "author": {
+      "name": "epoHless",
+      "url": "https://github.com/epoHless"
+    }
+  }
