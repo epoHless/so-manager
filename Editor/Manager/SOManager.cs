@@ -8,14 +8,14 @@ using Debug = UnityEngine.Debug;
 namespace epoHless.SOManager
 {
     [InitializeOnLoad]
-    public static class SOManager
+    internal static class SOManager
     {
         private static SOSettings _settings;
         private static Type[] _managedTypes;
 
         static SOManager() => Initialize();
 
-        public static void Initialize()
+        internal static void Initialize()
         {
             _managedTypes = AppDomain.CurrentDomain.GetAssemblies()
                                      .SelectMany( assembly => assembly.GetTypes() )
@@ -35,10 +35,10 @@ namespace epoHless.SOManager
                                      .FirstOrDefault();
         }
 
-        public static Type[] GetManagedTypes() => _managedTypes;
-        public static bool HasSettings() => _settings != null;
+        internal static Type[] GetManagedTypes() => _managedTypes;
+        internal static bool HasSettings() => _settings != null;
 
-        public static void Create( string name, Type manageable, bool useClassPrefix = true )
+        internal static ScriptableObject Create( string name, Type manageable, bool useClassPrefix = true )
         {
             var instance = ScriptableObject.CreateInstance( manageable );
 
@@ -56,9 +56,11 @@ namespace epoHless.SOManager
             AssetDatabase.CreateAsset( instance, finalPath );
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
+
+            return instance;
         }
 
-        public static ScriptableObject[] GetAll( Type manageable )
+        internal static ScriptableObject[] GetAll( Type manageable )
         {
             return AssetDatabase.FindAssets( $"t:{manageable.Name}" )
                                 .Select( AssetDatabase.GUIDToAssetPath )
@@ -66,26 +68,13 @@ namespace epoHless.SOManager
                                 .ToArray();
         }
 
-        public static void Delete( ScriptableObject instance )
+        internal static void Delete( ScriptableObject instance )
         {
             Undo.RecordObject( instance, "Delete Scriptable Object Of Type " + instance.GetType().Name );
 
             AssetDatabase.DeleteAsset( AssetDatabase.GetAssetPath( instance ) );
             AssetDatabase.SaveAssets();
             AssetDatabase.Refresh();
-        }
-
-        public static ScriptableObject[] SortBy( SortPreferenceType preferenceType, ScriptableObject[] array )
-        {
-            ISortPreference sortOperation = ( preferenceType ) switch
-            {
-                SortPreferenceType.Alphabetical => new AlphabeticalSort(),
-                SortPreferenceType.CreationDate => new CreationDateSort(),
-                SortPreferenceType.ModificationDate => new ModificationDateSort(),
-                _ => throw new ArgumentOutOfRangeException( nameof( preferenceType ), preferenceType, null )
-            };
-
-            return sortOperation.Sort( array );
         }
     }
 }

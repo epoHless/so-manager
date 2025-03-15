@@ -5,32 +5,32 @@ using UnityEngine;
 
 namespace epoHless.SOManager.Utilities
 {
-    public enum SortPreferenceType
+    internal enum SortPreferenceType
     {
         Alphabetical,
         CreationDate,
         ModificationDate
     }
 
-    public interface ISortPreference
+    internal interface ISortPreference
     {
-        public ScriptableObject[] Sort( ScriptableObject[] array );
+        public ManageableState.SOInfo[] Sort( ManageableState.SOInfo[] array );
     }
 
-    public class AlphabeticalSort : ISortPreference
+    internal class AlphabeticalSort : ISortPreference
     {
-        public ScriptableObject[] Sort( ScriptableObject[] array ) => array.OrderBy( o => o.name ).ToArray();
+        public ManageableState.SOInfo[] Sort( ManageableState.SOInfo[] array ) => array.OrderBy( o => o.Instance.name ).ToArray();
     }
 
-    public class CreationDateSort : ISortPreference
+    internal class CreationDateSort : ISortPreference
     {
-        public ScriptableObject[] Sort( ScriptableObject[] array ) =>
-            array.OrderBy( o => File.GetCreationTime( AssetDatabase.GetAssetPath( o ) ) ).ToArray();
+        public ManageableState.SOInfo[] Sort( ManageableState.SOInfo[] array ) =>
+            array.OrderBy( o => File.GetCreationTime( AssetDatabase.GetAssetPath( o.Instance ) ) ).ToArray();
     }
 
-    public class ModificationDateSort : ISortPreference
+    internal class ModificationDateSort : ISortPreference
     {
-        public ScriptableObject[] Sort( ScriptableObject[] array ) =>
-            array.OrderBy( o => File.GetLastWriteTime( AssetDatabase.GetAssetPath( o ) ) ).ToArray();
+        public ManageableState.SOInfo[] Sort( ManageableState.SOInfo[] array ) =>
+            array.OrderBy( o => File.GetLastWriteTime( AssetDatabase.GetAssetPath( o.Instance ) ) ).ToArray();
     }
 }
